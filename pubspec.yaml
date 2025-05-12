@@ -1,6 +1,6 @@
 name: vehicle_monitor_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: 'none' # Remove this line if you plan to publish it
 
 version: 1.0.0+1
 
@@ -16,11 +16,14 @@ dependencies:
   firebase_core: ^3.13.0
   firebase_database: ^11.3.5
 
-  # Gauge for speedometer
+  # Speedometer gauge
   syncfusion_flutter_gauges: ^20.3.58
 
-  # Theme and state management
-  provider: ^6.1.1  # ✅ Added for theme switching support
+  # URL launcher (Updated version for bug fixes)
+  url_launcher: ^6.2.5
+
+  # Theme/state management
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:
