@@ -66,7 +66,7 @@ class _MainNavigationState extends State<MainNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.speed), label: "Dashboard"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
         ],
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: Colors.red,
       ),
     );
   }

@@ -5,15 +5,16 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DashboardScreen extends StatefulWidget {
-
+  @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
   double speed = 0.0;
-  double acceleration = 0.0;
   double gforce = 0.0;
   double topSpeed = 0.0;
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   bool isAnalog = true;
 
@@ -27,8 +28,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (data != null) {
         setState(() {
           speed = double.tryParse(data["speed"].toString()) ?? 0.0;
-          acceleration = double.tryParse(data["acceleration"].toString()) ?? 0.0;
           gforce = double.tryParse(data["gforce"].toString()) ?? 0.0;
+          latitude = double.tryParse(data["latitude"].toString()) ?? 0.0;
+          longitude = double.tryParse(data["longitude"].toString()) ?? 0.0;
+
           if (speed > topSpeed) topSpeed = speed;
         });
       }
@@ -57,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Vehicle Monitor Dashboard"),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
         centerTitle: true,
       ),
       body: ListView(
@@ -69,15 +72,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 250,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: Colors.deepPurple,
-                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8)],
+                color: Colors.red,
+                boxShadow: [BoxShadow(color: Colors.black, blurRadius: 8)],
               ),
               child: isAnalog
                   ? Container(
                 color: isDarkMode ? Colors.black : Colors.white,
                 child: SfRadialGauge(
                   title: GaugeTitle(
-                    text: 'Speedometer (Analog)',
+                    text: 'Speedometer ',
                     textStyle: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -115,19 +118,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               )
                   : Container(
-                color: isDarkMode ? Colors.black : Colors.white,
+                color: isDarkMode ? Colors.black : Colors.black,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.speed, size: 40, color: Colors.deepPurple),
+                      Icon(Icons.speed, size: 40, color: Colors.red),
                       SizedBox(height: 10),
                       Text(
                         '${speed.toStringAsFixed(1)} km/h',
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.deepPurple,
+                          color: isDarkMode ? Colors.white : Colors.red,
                         ),
                       ),
                       Text(
@@ -144,12 +147,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           buildDataCard("Top Speed", "$topSpeed km/h", Icons.trending_up, Colors.deepOrange),
-          buildDataCard("Acceleration", "$acceleration m/s²", Icons.show_chart, Colors.green),
           buildDataCard("G-Force", "$gforce G", Icons.sync_alt, Colors.purple),
           ElevatedButton(
-            onPressed: () => openGoogleMaps(12.9716, 77.5946), // Example location, replace with dynamic coordinates
+            onPressed: () => openGoogleMaps(latitude, longitude), // Use data from Firebase
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple, // Use backgroundColor instead of primary
+              backgroundColor: Colors.black,
             ),
             child: Text('Show Live Location'),
           ),
